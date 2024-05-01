@@ -18,9 +18,15 @@
     "@angular/platform-browser": "^15.1.0",
     "@angular/platform-browser-dynamic": "^15.1.0",
     "@angular/router": "^15.1.0",
+    "@types/three": "^0.160.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.12.0"
+    "zone.js": "~0.12.0",
+    "three": "^0.160.0",
+    "three-mesh-ui": "^6.5.4",
+    "lil-gui": "^0.19.1",
+    "gsap": "^3.12.5",
+    "@types/gsap": "^3.0.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^15.1.2",
