@@ -1,3 +1,3 @@
 export enum GLTFModels{
-    Room = "assets/Models/Room/Room.glb",
+    Room = "assets/Models/Room/MyRoom.glb",
 }

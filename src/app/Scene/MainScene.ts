@@ -1,10 +1,12 @@
-import {AmbientLight, Color, DirectionalLight, Group, PerspectiveCamera} from "three";
+import {AmbientLight, Color, Group, Mesh, MeshBasicMaterial, PerspectiveCamera, SRGBColorSpace} from "three";
 import {IThreeJS} from "../Interfaces/IThreeJS";
-import {ResourcesGLTF} from "../Loading/ResourcesMap";
+import {ResourcesGLTF, ResourcesTextures} from "../Loading/ResourcesMap";
 import {GLTFModels} from "../Enums/Models";
 import {
   TransformControlService
 } from "../Helpers/three-js-helpers-transform-control/transform-control/transform-control.service";
+import {GLTF} from "three/examples/jsm/loaders/GLTFLoader";
+import {Images} from "../Enums/Images";
 
 export class MainScene extends Group{
 
@@ -20,6 +22,10 @@ export class MainScene extends Group{
 
     const light = new AmbientLight(0xffffff, 3);
     const room = ResourcesGLTF.get(GLTFModels.Room)!;
+
+    this.setRoomMaterials(room);
+
+    console.log(room)
     room.scene.scale.set(0.1, 0.1, 0.1);
 
     this._threeJS.scene.background = new Color(0x000000);
@@ -32,5 +38,21 @@ export class MainScene extends Group{
     this._threeJS.scene.add(room.scene);
 
 
+  }
+
+  private setRoomMaterials(room: GLTF) {
+
+    room.scene.traverse((child) => {
+      if (child instanceof Mesh) {
+
+        if(child.name === 'Walls' || child.name === "Floor" || child.name === "Window"){
+          const wallsTexture = ResourcesTextures.get(Images.WallsFloor)!;
+          wallsTexture.flipY = false;
+          wallsTexture.colorSpace = SRGBColorSpace
+          child.material = new MeshBasicMaterial({map: wallsTexture})
+        }
+        console.log(child.name)
+      }
+    })
   }
 }
