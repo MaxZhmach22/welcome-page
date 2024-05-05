@@ -26,12 +26,12 @@ export class MainScene extends Group{
     this.setRoomMaterials(room);
 
     console.log(room)
-    room.scene.scale.set(0.1, 0.1, 0.1);
+    room.scene.scale.set(1, 1, 1);
 
     this._threeJS.scene.background = new Color(0x000000);
 
-    this._transformControls.orbitControls.target.set(0, 0, 0);
-    this._camera.position.set(10, 20, 60);
+    this._transformControls.orbitControls.target.set(0, 1.5, 0);
+    this._camera.position.set(2.5, 4, 3);
     this._transformControls.orbitControls.update();
 
     this._threeJS.scene.add(light)
