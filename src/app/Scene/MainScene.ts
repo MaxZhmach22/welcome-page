@@ -51,6 +51,21 @@ export class MainScene extends Group{
           wallsTexture.colorSpace = SRGBColorSpace
           child.material = new MeshBasicMaterial({map: wallsTexture})
         }
+        else if(child.name === 'Decor'){
+          const decor = ResourcesTextures.get(Images.Decor)!;
+          decor.flipY = false;
+          decor.colorSpace = SRGBColorSpace
+          child.material = new MeshBasicMaterial({map: decor})
+        }
+
+        else if(child.name === 'Funuture'){
+          const funuture = ResourcesTextures.get(Images.Funuture)!;
+          funuture.flipY = false;
+          funuture.colorSpace = SRGBColorSpace
+          child.material = new MeshBasicMaterial({map: funuture})
+        }
+
+
         console.log(child.name)
       }
     })
