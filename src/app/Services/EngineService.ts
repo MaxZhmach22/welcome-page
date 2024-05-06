@@ -1,4 +1,4 @@
-import {ElementRef, Injectable} from "@angular/core";
+import {ElementRef, Injectable, QueryList} from "@angular/core";
 import {Clock, PerspectiveCamera, Scene, WebGLRenderer} from "three";
 import {IThreeJS} from "../Interfaces/IThreeJS";
 
@@ -38,6 +38,7 @@ export class EngineService {
 
   //If started with home page
   private _homePageViewed = false;
+  private _mainScene: MainScene | null = null;
 
   get homePageViewed(): boolean {
     return this._homePageViewed;
@@ -87,7 +88,7 @@ export class EngineService {
     this.panelGuiService.gui.close()
   }
 
-  async init(threeJS: IThreeJS, gameContainer: ElementRef) {
+  async init(threeJS: IThreeJS, gameContainer: ElementRef,  pointsRef: QueryList<ElementRef>,lablesRef: QueryList<ElementRef>) {
 
     this._threeJS = threeJS;
 
@@ -98,8 +99,8 @@ export class EngineService {
     const loadingScreen = new LoadingViewBuilder(this, this.panelGuiService);
     loadingScreen.constructView(threeJS)
 
-    const mainScene = new MainScene(this._threeJS, this.transformControls, this._camera);
-    this._threeJS.scene.add(mainScene);
+    this._mainScene = new MainScene(this._threeJS, this.transformControls, this._camera, pointsRef, lablesRef);
+    this._threeJS.scene.add(this._mainScene);
 
     this._threeJS.renderer.setAnimationLoop(this.render);
   }
@@ -127,6 +128,7 @@ export class EngineService {
     this._previousElapsedTime = elapsedTime;
 
     this._onUpdate.next(deltaTime);
+    if(this._mainScene) this._mainScene.update(deltaTime);
     updateMeshUI()
     //Helpers
     this.mouseRaycastService.update(deltaTime);

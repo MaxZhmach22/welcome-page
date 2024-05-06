@@ -106,3 +106,60 @@ html, body {
   100% { transform:rotate(1turn)}
 }
 
+
+.point {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+.point:hover .text{
+  opacity: 1;
+}
+
+.point.visible .text {
+  transform: scale(1,1);
+  opacity: 1;
+}
+
+.text.visible{
+  opacity: 1;
+}
+
+.point .text{
+  position: absolute;
+  top: 0px;
+  left: -120px;
+  width: 200px;
+  padding: 20px;
+  border-radius: 5px;
+  background: #00000077;
+  color: #FFFFFF;
+  text-align: center;
+  line-height: 1.3em;
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: 100;
+  font-size: 14px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.point .label{
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #00000077;
+  color: #FFFFFF;
+  font-family: Helvetica, Arial, sans-serif;
+  text-align: center;
+  line-height: 40px;
+  font-size: 14px;
+  font-weight: 100;
+  cursor: help;
+  transform: scale(0,0);
+  transition: transform 0.3s;
+}

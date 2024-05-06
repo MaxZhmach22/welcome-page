@@ -5,4 +5,9 @@
     <div #loader style="position: absolute; rotate: 90deg; scale: 2; visibility: visible; margin: 0px -45px;" id="loader"></div>
   </div>
 
+  <div *ngFor="let point of points; let i = index" class="point" style="visibility: inherit" #point [class]="'point point-' + i">
+    <div class="label" (click)="choosePointClick(i)">{{i + 1}}</div>
+    <div #pointLable class="text">{{PathConfig.get(i + 1)?.hintMessage}}<br></div>
+  </div>
+
 </div>

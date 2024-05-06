@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {ReinhardToneMapping, Scene, SRGBColorSpace, TextureLoader, WebGLRenderer} from "three";
 import {IThreeJS} from "./Interfaces/IThreeJS";
 import {OrbitControlSettingsProvider} from "./Services/OrbitControlSettingsProvider";
@@ -6,6 +6,7 @@ import {EngineService} from "./Services/EngineService";
 import {ResourcesGLTF, ResourcesTextures} from "./Loading/ResourcesMap";
 import {GLTFModels} from "./Enums/Models";
 import {Images} from "./Enums/Images";
+import {InfoPoints} from "./Configurations/InfoPoints";
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,12 @@ export class AppComponent implements AfterViewInit{
   @ViewChild('gameContainer') private gameContainer!: ElementRef;
   @ViewChild('canvas') private canvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild('loadingProgressElement') private loadingProgressElement!: ElementRef;
+
+  @ViewChildren('point') public pointsRef!: QueryList<ElementRef>;
+  @ViewChildren('pointLable') public lablesRef!: QueryList<ElementRef>;
+
+  public points = Array(5).fill(null).map((_, index) => index + 1);
+  protected readonly PathConfig = InfoPoints;
 
   loadingProgress: string = '';
 
@@ -65,7 +72,12 @@ export class AppComponent implements AfterViewInit{
       ResourcesTextures.set(Images[resource as keyof typeof Images], image);
     }
 
-    await this._engineService.init(threeJS, this.gameContainer);
+    await this._engineService.init(threeJS, this.gameContainer, this.pointsRef, this.lablesRef);
   }
+
+  choosePointClick(i: number) {
+
+  }
+
 
 }
