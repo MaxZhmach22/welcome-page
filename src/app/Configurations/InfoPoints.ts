@@ -1,29 +1,31 @@
 import {Images} from "../Enums/Images";
+import {Vector3} from "three";
 
 export const InfoPoints = new Map<number, Point>([
     [1, {
-        hintMessage: 'Дома самый вкусный раф! ☕',
-        attachedMeshName: 'Point_00'
+        hintMessage: 'Resume',
+        attachedMeshName: 'Point_00',
+        position: new Vector3(-3, 2.5, 3)
     }],
     [2, {
-        hintMessage: 'Жду завтрак. Обещают овсянку с персиками 😱😜❤️',
-        attachedMeshName: 'Point_01'
+        hintMessage: 'Play my dune game! 🏖️',
+        attachedMeshName: 'Point_01',
+        position: new Vector3(-3.2, 2.2, 0)
     }],
     [3, {
-        hintMessage: 'Сделала реснички и брови! Люблю комбо! 😜',
-        attachedMeshName: 'Point_02'
+        hintMessage: 'My favorite games! 🎮',
+        attachedMeshName: 'Point_02',
+        position: new Vector3(-1.5, 2, -3.5)
     }],
     [4, {
-        hintMessage: 'Вокруг одни олени! Я что, в сказке?! 😳',
-        attachedMeshName: 'Point_03'
-    }],
-    [5, {
-        hintMessage: 'Hi guys! Can I join your meeting? 🤗',
-        attachedMeshName: 'Point_04'
+        hintMessage: 'Where I live 🏠',
+        attachedMeshName: 'Point_03',
+        position: new Vector3(2.5, 2.2, -4)
     }]
 ])
 
 export interface Point {
     hintMessage: string,
     attachedMeshName: string,
+    position: Vector3
 }

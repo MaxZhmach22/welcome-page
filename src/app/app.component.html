@@ -6,8 +6,7 @@
   </div>
 
   <div *ngFor="let point of points; let i = index" class="point" style="visibility: inherit" #point [class]="'point point-' + i">
-    <div class="label" (click)="choosePointClick(i)">{{i + 1}}</div>
-    <div #pointLable class="text">{{PathConfig.get(i + 1)?.hintMessage}}<br></div>
+    <div #pointLable class="text">{{i + 1}}<br></div>
   </div>
 
 </div>

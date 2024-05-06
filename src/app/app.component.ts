@@ -22,7 +22,7 @@ export class AppComponent implements AfterViewInit{
   @ViewChildren('point') public pointsRef!: QueryList<ElementRef>;
   @ViewChildren('pointLable') public lablesRef!: QueryList<ElementRef>;
 
-  public points = Array(5).fill(null).map((_, index) => index + 1);
+  public points = Array(4).fill(null).map((_, index) => index + 1);
   protected readonly PathConfig = InfoPoints;
 
   loadingProgress: string = '';
@@ -76,7 +76,7 @@ export class AppComponent implements AfterViewInit{
   }
 
   choosePointClick(i: number) {
-
+    console.log(i)
   }
 
 
