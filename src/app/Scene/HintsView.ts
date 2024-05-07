@@ -1,7 +1,7 @@
 import {
   TransformControlService
 } from "../Helpers/three-js-helpers-transform-control/transform-control/transform-control.service";
-import {Group, PerspectiveCamera, Raycaster, Vector2, Vector3} from "three";
+import {Frustum, Group, Matrix4, PerspectiveCamera, Raycaster, Vector2, Vector3} from "three";
 import {IThreeJS} from "../Interfaces/IThreeJS";
 import {ElementRef, QueryList} from "@angular/core";
 import {Layers} from "../Enums/Layers";
@@ -16,7 +16,7 @@ export class HintsView {
   private _frameCounter = 0;
   private _skipFactor = {value: 0.015};
   private _raycaster: Raycaster = new Raycaster();
-  private _distanceDeadZone = {value: 4}
+  private _frustum = new Frustum();
 
   constructor(private readonly _threeJS: IThreeJS,
               private readonly _transformControls: TransformControlService,
@@ -44,20 +44,26 @@ export class HintsView {
   update(dt: number) {
     if (this._pointsOfInterest.length == 0) return;
     this._frameCounter += dt;
-    const offset = 0.9;
+    const offset = 0.8;
     if (this._frameCounter >= this._skipFactor.value) {
       this._frameCounter = 0;
 
       for (const point of this._pointsOfInterest) {
-        const screenPosition = point.pictureInfo.hintPosition.clone();
+        const screenPosition = point.pictureInfo.hintPosition.clone()
         screenPosition.project(this._camera);
+
+
+        this._frustum.setFromProjectionMatrix(new Matrix4().multiplyMatrices(this._camera.projectionMatrix, this._camera.matrixWorldInverse));
+
+        const isInFrustum = this._frustum.containsPoint(point.pictureInfo.position);
 
         const outOfScreen = screenPosition.x < -offset
           || screenPosition.x > offset
           || screenPosition.y < -offset
-          || screenPosition.y > offset;
+          || screenPosition.y > offset
 
-        if (!outOfScreen) {
+
+        if (!outOfScreen && isInFrustum) {
           this.setVisibility(point.element, true)
           this.setVisibility(point.lable, true)
           this.movingHtmlElements(screenPosition, point)
@@ -68,6 +74,7 @@ export class HintsView {
           }
         } else {
           this.setVisibility(point.element, false)
+          this.setVisibility(point.lable, false)
         }
       }
     }
@@ -93,6 +100,7 @@ export class HintsView {
                 cameraPosition: child.localToWorld(new Vector3(0, 2, 0)),
                 lookAtPosition: child.localToWorld(new Vector3(0, 0, 0)),
                 hintPosition: lookPoint.localToWorld(new Vector3(0, 0, 0)),
+                position: point.position,
                 //orbitControlsConfig: orbitControlsConstants
               });
             }
@@ -147,6 +155,7 @@ export interface PictureInfoCoordinates {
   cameraPosition: Vector3,
   lookAtPosition: Vector3,
   hintPosition: Vector3,
+  position: Vector3,
   //orbitControlsConfig: OrbitControlsConstants
 }
 

@@ -85,7 +85,7 @@ export class EngineService {
     if (environment.production) {
       this.panelGuiService.gui.hide()
     }
-    this.panelGuiService.gui.close()
+    //this.panelGuiService.gui.close()
   }
 
   async init(threeJS: IThreeJS, gameContainer: ElementRef,  pointsRef: QueryList<ElementRef>,lablesRef: QueryList<ElementRef>) {
@@ -99,7 +99,7 @@ export class EngineService {
     const loadingScreen = new LoadingViewBuilder(this, this.panelGuiService);
     loadingScreen.constructView(threeJS)
 
-    this._mainScene = new MainScene(this._threeJS, this.transformControls, this._camera, pointsRef, lablesRef);
+    this._mainScene = new MainScene(this._threeJS, this.transformControls, this._camera, this.panelGuiService, pointsRef, lablesRef);
     this._threeJS.scene.add(this._mainScene);
 
     this._threeJS.renderer.setAnimationLoop(this.render);
@@ -134,6 +134,7 @@ export class EngineService {
     this.mouseRaycastService.update(deltaTime);
     //this.transformControls.update()
 
-    this._threeJS.renderer.render(this._threeJS.scene, this._camera);
+    this._mainScene!.EffectComposer.render(deltaTime)
+    //this._threeJS.renderer.render(this._threeJS.scene, this._camera);
   }
 }

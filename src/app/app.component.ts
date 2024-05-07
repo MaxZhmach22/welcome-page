@@ -7,6 +7,10 @@ import {ResourcesGLTF, ResourcesTextures} from "./Loading/ResourcesMap";
 import {GLTFModels} from "./Enums/Models";
 import {Images} from "./Enums/Images";
 import {InfoPoints} from "./Configurations/InfoPoints";
+import {
+  TransformControlService
+} from "./Helpers/three-js-helpers-transform-control/transform-control/transform-control.service";
+import {gsap} from "gsap";
 
 @Component({
   selector: 'app-root',
@@ -28,7 +32,8 @@ export class AppComponent implements AfterViewInit{
   loadingProgress: string = '';
 
   constructor(private readonly _engineService: EngineService,
-              private readonly _orbitControls: OrbitControlSettingsProvider){
+              private readonly _orbitControls: OrbitControlSettingsProvider,
+              private readonly _transformControls: TransformControlService){
   }
 
   async ngAfterViewInit(){
@@ -76,7 +81,18 @@ export class AppComponent implements AfterViewInit{
   }
 
   choosePointClick(i: number) {
-    console.log(i)
+    this._transformControls.orbitControls.target.copy(InfoPoints.get(i)!.position);
+    gsap.to(this._engineService.camera.position, {
+      duration: 1.5,
+      x: InfoPoints.get(i)!.position.x * .5,
+      y: InfoPoints.get(i)!.position.y,
+      z: InfoPoints.get(i)!.position.z * .5,
+      onStart: () => {
+        this._transformControls.orbitControls.enabled = false;
+      },
+      onComplete: () => {
+        this._transformControls.orbitControls.enabled = true}
+    });
   }
 
 
