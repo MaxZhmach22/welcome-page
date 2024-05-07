@@ -44,7 +44,7 @@ export class HintsView {
   update(dt: number) {
     if (this._pointsOfInterest.length == 0) return;
     this._frameCounter += dt;
-    const offset = 0.6;
+    const offset = 0.9;
     if (this._frameCounter >= this._skipFactor.value) {
       this._frameCounter = 0;
 

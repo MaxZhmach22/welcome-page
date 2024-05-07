@@ -115,10 +115,10 @@ html, body {
 
 .point:hover .text{
   opacity: 1;
+  transform: scale(1.2,1.2);
 }
 
 .point.visible .text {
-  transform: scale(1,1);
   opacity: 1;
 }
 
@@ -130,9 +130,10 @@ html, body {
   position: absolute;
   top: 0px;
   left: -120px;
-  width: 50px;
+  width: 18px;
+  height: 18px;
   padding: 20px;
-  border-radius: 5px;
+  border-radius: 50%;
   background: #00000077;
   color: #FFFFFF;
   text-align: center;
@@ -141,8 +142,7 @@ html, body {
   font-weight: 100;
   font-size: 14px;
   opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s;
+  transition: opacity 0.3s, transform 0.3s;
 }
 
 .point .label{

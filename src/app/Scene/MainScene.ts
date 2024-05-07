@@ -20,11 +20,13 @@ import {Images} from "../Enums/Images";
 import {ElementRef, QueryList} from "@angular/core";
 import {HintsView} from "./HintsView";
 import {Layers} from "../Enums/Layers";
+import {CameraMovementSystem} from "./CameraMovementSystem";
 
 
 export class MainScene extends Group {
 
   private _hintView: HintsView | null = null;
+  private _cameraMovementSystem: CameraMovementSystem | null = null;
 
   constructor(private readonly _threeJS: IThreeJS,
               private readonly _transformControls: TransformControlService,
@@ -55,11 +57,9 @@ export class MainScene extends Group {
 
     this._hintView.init(this);
 
-    this._threeJS.scene.background = new Color(0x000000);
+    this._cameraMovementSystem = new CameraMovementSystem(this._camera, this._transformControls)
 
-    this._transformControls.orbitControls.target.set(0, 1.5, 0);
-    this._camera.position.set(2.5, 4, 3);
-    this._transformControls.orbitControls.update();
+    this._threeJS.scene.background = new Color(0x000000);
 
     this._threeJS.scene.add(room.scene);
   }
@@ -92,6 +92,7 @@ export class MainScene extends Group {
 
   update(dt: number) {
     if(this._hintView) this._hintView.update(dt);
+    if(this._cameraMovementSystem) this._cameraMovementSystem.update(dt);
   }
 
 }
