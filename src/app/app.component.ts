@@ -30,6 +30,7 @@ export class AppComponent implements AfterViewInit{
   protected readonly PathConfig = InfoPoints;
 
   loadingProgress: string = '';
+  currentPoint: number = 0;
 
   constructor(private readonly _engineService: EngineService,
               private readonly _orbitControls: OrbitControlSettingsProvider,
@@ -78,9 +79,11 @@ export class AppComponent implements AfterViewInit{
     }
 
     await this._engineService.init(threeJS, this.gameContainer, this.pointsRef, this.lablesRef);
+    this._orbitControls.init();
   }
 
   choosePointClick(i: number) {
+    this.currentPoint = i;
     this._transformControls.orbitControls.target.copy(InfoPoints.get(i)!.position);
     gsap.to(this._engineService.camera.position, {
       duration: 1.5,
@@ -94,6 +97,4 @@ export class AppComponent implements AfterViewInit{
         this._transformControls.orbitControls.enabled = true}
     });
   }
-
-
 }

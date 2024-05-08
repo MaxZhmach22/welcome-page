@@ -19,15 +19,7 @@ export class OrbitControlSettingsProvider{
 
     init(){
         const orbitControls = this.transformControlService.orbitControls;
-        orbitControls.enableDamping = Config.OrbitConfig.enableDamping;
-        orbitControls.dampingFactor = Config.OrbitConfig.dampingFactor;
-        orbitControls.enableZoom = Config.OrbitConfig.enableZoom;
-        orbitControls.maxPolarAngle = Config.OrbitConfig.maxPolarAngle;
-        orbitControls.minPolarAngle = Config.OrbitConfig.minPolarAngle;
-        orbitControls.maxDistance = Config.OrbitConfig.maxDistance;
-        orbitControls.minDistance = Config.OrbitConfig.minDistance;
-        orbitControls.maxAzimuthAngle = Config.OrbitConfig.maxAzimuthAngle;
-        orbitControls.minAzimuthAngle = Config.OrbitConfig.minAzimuthAngle;
+
 
         this.orbitControlsFolder.add(Config.OrbitConfig, 'enableDamping').name('Enable Damping').onChange((value: boolean) => {
             orbitControls.enableDamping = value;
@@ -60,14 +52,4 @@ export class OrbitControlSettingsProvider{
         this.orbitControlsFolder.add(orbitControls, 'maxAzimuthAngle').name('Max Azimuth Angle').listen().disable(true)
         this.orbitControlsFolder.add(orbitControls, 'minAzimuthAngle').name('Min Azimuth Angle').listen().disable(true)
     }
-
-  setFreeCamera() {
-    const orbitControls = this.transformControlService.orbitControls;
-    orbitControls.maxAzimuthAngle = Config.FreeOrbitConfig.maxAzimuthAngle;
-    orbitControls.minAzimuthAngle = Config.FreeOrbitConfig.minAzimuthAngle;
-    orbitControls.maxDistance = Config.FreeOrbitConfig.maxDistance
-    orbitControls.minDistance = Config.FreeOrbitConfig.minDistance
-    orbitControls.maxPolarAngle = Config.FreeOrbitConfig.maxPolarAngle;
-    orbitControls.minPolarAngle = Config.FreeOrbitConfig.minPolarAngle;
-  }
 }

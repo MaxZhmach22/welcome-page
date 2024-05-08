@@ -9,4 +9,8 @@
     <div #pointLable  class="text">{{i + 1}}<br></div>
   </div>
 
+  <div class ="nav__dots">
+    <div *ngFor="let point of points; let i = index" (click)="choosePointClick(i + 1)" class="nav__dot" [class.active]="i + 1 === currentPoint"></div>
+  </div>
+
 </div>
