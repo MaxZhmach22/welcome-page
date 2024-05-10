@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, QueryList, ViewChild, ViewChildren} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostListener, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {ReinhardToneMapping, Scene, SRGBColorSpace, TextureLoader, WebGLRenderer} from "three";
 import {IThreeJS} from "./Interfaces/IThreeJS";
 import {OrbitControlSettingsProvider} from "./Services/OrbitControlSettingsProvider";
@@ -84,6 +84,7 @@ export class AppComponent implements AfterViewInit{
 
   choosePointClick(i: number) {
     this.currentPoint = i;
+    this.resetPoints();
     this._transformControls.orbitControls.target.copy(InfoPoints.get(i)!.position);
     gsap.to(this._engineService.camera.position, {
       duration: 1.5,
@@ -91,10 +92,19 @@ export class AppComponent implements AfterViewInit{
       y: InfoPoints.get(i)!.position.y,
       z: InfoPoints.get(i)!.position.z * .5,
       onStart: () => {
+        this.lablesRef.toArray()[i-1].nativeElement.classList.add('active')
+        this.lablesRef.toArray()[i-1].nativeElement.innerHTML = InfoPoints.get(i)?.hintMessage;
         this._transformControls.orbitControls.enabled = false;
       },
       onComplete: () => {
         this._transformControls.orbitControls.enabled = true}
     });
+  }
+
+  private resetPoints() {
+    this.lablesRef.forEach((lable, index) => {
+      lable.nativeElement.innerHTML = index + 1;
+      lable.nativeElement.classList.remove('active')
+    })
   }
 }

@@ -14,7 +14,7 @@ export class CameraMovementSystem{
     this._transformControls.orbitControls.enableDamping = true;
     this._transformControls.orbitControls.dampingFactor = 0.1;
     this._transformControls.orbitControls.rotateSpeed = 0.15;
-    this._transformControls.orbitControls.enablePan = false;
+    //this._transformControls.orbitControls.enablePan = false;
   }
 
 

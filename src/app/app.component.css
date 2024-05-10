@@ -102,10 +102,6 @@ html, body {
   opacity: 1;
 }
 
-.text.visible{
-  opacity: 1;
-}
-
 .point .text{
   position: absolute;
   top: 0px;
@@ -123,6 +119,17 @@ html, body {
   font-size: 14px;
   opacity: 0;
   transition: opacity 0.3s, transform 0.3s;
+}
+
+.text.visible.active{
+  opacity: 1;
+  width: 400px;
+  height: 140px;
+  border-radius: 5px;
+  pointer-events: none;
+  transform: scale(1,1);
+  transition: all 0.5s;
+  text-align: justify;
 }
 
 .nav__dots{

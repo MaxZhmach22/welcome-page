@@ -147,18 +147,28 @@ export class MainScene extends Group {
 
     room.scene.traverse((child) => {
       if (child instanceof Mesh) {
-        if (child.name === 'Walls' || child.name === "Floor" || child.name === "Window") {
-          const wallsTexture = ResourcesTextures.get(Images.WallsFloor)!;
+        if (child.name === 'BaseRoom') {
+          const wallsTexture = ResourcesTextures.get(Images.BaseRoom)!;
           wallsTexture.flipY = false;
           wallsTexture.colorSpace = SRGBColorSpace
           child.material = new MeshBasicMaterial({map: wallsTexture})
-        } else if (child.name === 'Decor') {
-          const decor = ResourcesTextures.get(Images.Decor)!;
+        } else if (child.name === 'Decor_01') {
+          const decor = ResourcesTextures.get(Images.Decor_01)!;
           decor.flipY = false;
           decor.colorSpace = SRGBColorSpace
           child.material = new MeshBasicMaterial({map: decor})
-        } else if (child.name === 'Funuture') {
-          const funuture = ResourcesTextures.get(Images.Funuture)!;
+        } else if (child.name === 'Decor_02') {
+          const decor = ResourcesTextures.get(Images.Decor_02)!;
+          decor.flipY = false;
+          decor.colorSpace = SRGBColorSpace
+          child.material = new MeshBasicMaterial({map: decor})
+        } else if (child.name === 'Decor_03') {
+          const decor = ResourcesTextures.get(Images.Decor_03)!;
+          decor.flipY = false;
+          decor.colorSpace = SRGBColorSpace
+          child.material = new MeshBasicMaterial({map: decor})
+        } else if (child.name === 'Funuture_01') {
+          const funuture = ResourcesTextures.get(Images.Funuture_01)!;
           funuture.flipY = false;
           funuture.colorSpace = SRGBColorSpace
           child.material = new MeshBasicMaterial({map: funuture})

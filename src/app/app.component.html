@@ -6,7 +6,7 @@
   </div>
 
   <div *ngFor="let point of points; let i = index" (click)="choosePointClick(i + 1)" class="point" style="visibility: inherit" #point [class]="'point point-' + i">
-    <div #pointLable  class="text">{{i + 1}}<br></div>
+    <div #pointLable class="text">{{i + 1}}</div>
   </div>
 
   <div class ="nav__dots">
