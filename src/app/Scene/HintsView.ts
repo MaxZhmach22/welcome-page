@@ -49,13 +49,15 @@ export class HintsView {
       this._frameCounter = 0;
 
       for (const point of this._pointsOfInterest) {
-        const screenPosition = point.pictureInfo.hintPosition.clone()
+        const screenPosition = point.pictureInfo.position.pointOfView.clone()
         screenPosition.project(this._camera);
-
 
         this._frustum.setFromProjectionMatrix(new Matrix4().multiplyMatrices(this._camera.projectionMatrix, this._camera.matrixWorldInverse));
 
         const isInFrustum = this._frustum.containsPoint(point.pictureInfo.position.pointOfView);
+
+        const isToFar = point.pictureInfo.position.pointOfView.distanceTo(this._camera.position) > 16;
+
 
         const outOfScreen = screenPosition.x < -offset
           || screenPosition.x > offset
@@ -63,15 +65,10 @@ export class HintsView {
           || screenPosition.y > offset
 
 
-        if (!outOfScreen && isInFrustum) {
+        if (!outOfScreen && isInFrustum && !isToFar) {
           this.setVisibility(point.element, true)
           this.setVisibility(point.lable, true)
           this.movingHtmlElements(screenPosition, point)
-          const translateX = screenPosition.x * this._threeJS.renderer.domElement.clientWidth * 0.5;
-          const translateY = -screenPosition.y * this._threeJS.renderer.domElement.clientHeight * 0.5;
-          if (point.element) {
-            point.element.style.transform = `translate(${translateX}px, ${translateY}px)`
-          }
         } else {
           this.setVisibility(point.element, false)
           this.setVisibility(point.lable, false)
@@ -99,7 +96,7 @@ export class HintsView {
                 name: child.name,
                 cameraPosition: child.localToWorld(new Vector3(0, 2, 0)),
                 lookAtPosition: child.localToWorld(new Vector3(0, 0, 0)),
-                hintPosition: lookPoint.localToWorld(new Vector3(0, 0, 0)),
+                hintPosition: child.getWorldPosition(new Vector3()),
                 position: point.position!,
                 //orbitControlsConfig: orbitControlsConstants
               });
@@ -133,8 +130,8 @@ export class HintsView {
   }
 
   private movingHtmlElements(screenPosition: Vector3, point: PointOfInterest) {
-    const translateX = screenPosition.x * this._threeJS.renderer.domElement.clientWidth * 0.5;
-    const translateY = -screenPosition.y * this._threeJS.renderer.domElement.clientHeight * 0.5;
+    const translateX = screenPosition.x * this._threeJS.renderer.domElement.clientWidth / 2;
+    const translateY = -screenPosition.y * this._threeJS.renderer.domElement.clientHeight / 2;
     if (point.element) {
       point.element.style.transform = `translate(${translateX}px, ${translateY}px)`
     }

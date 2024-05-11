@@ -35,7 +35,7 @@ export class LoadingViewBuilder{
       this._engineService.onLoadProgress$.next((itemsLoaded / itemsTotal));
     }
 
-    this._panelGuiService.gui.add(this._uniforms.uAlpha, 'value').min(0).max(1).step(0.01).name('Alpha').listen()
+    this._panelGuiService.gui.add(this._uniforms.uAlpha, 'value').min(0).max(1).step(0.01).name('Alpha').listen();
 
     const overlayGeometry = new PlaneGeometry(2,2,1,1);
     const overlayMaterial = new ShaderMaterial({
@@ -59,5 +59,8 @@ export class LoadingViewBuilder{
     threeJS.scene.add(overlay);
   }
 
+  setAlpha(value: number){
+    this._uniforms.uAlpha.value = value;
+  }
 
 }

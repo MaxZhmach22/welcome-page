@@ -2,16 +2,16 @@
   <canvas #canvas></canvas>
   <div style="position: absolute; top: 50%;left: 50%;">
     <span #loadingProgressElement class="loading-percents">{{loadingProgress}}</span>
-    <div #loader style="position: absolute; rotate: 90deg; scale: 2; visibility: visible; margin: 0px -45px;" id="loader"></div>
+    <div #loader style="position: absolute; scale: 2; visibility: visible; margin: 0px -45px;" id="loader"></div>
   </div>
 
-  <div class="free-move" (click)="freeMovement()">Free</div>
+  <div *ngIf=isLoad class="free-move" (click)="freeMovement()">Free</div>
 
   <div *ngFor="let point of points; let i = index" (click)="choosePointClick(i + 1)" class="point" style="visibility: inherit" #point [class]="'point point-' + i">
-    <div #pointLable class="text">{{i + 1}}</div>
+    <div #pointLable style="visibility: hidden" class="text">{{i + 1}}</div>
   </div>
 
-  <div class ="nav__dots">
+  <div *ngIf=isLoad class ="nav__dots">
     <div *ngFor="let point of points; let i = index" (click)="choosePointClick(i + 1)" class="nav__dot" [class.active]="i + 1 === currentPoint"></div>
   </div>
 

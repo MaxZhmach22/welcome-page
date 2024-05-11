@@ -31,6 +31,7 @@ export class AppComponent implements AfterViewInit{
 
   loadingProgress: string = '';
   currentPoint: number = 0;
+  isLoad: boolean = false;
 
   constructor(private readonly _engineService: EngineService,
               private readonly _orbitControls: OrbitControlSettingsProvider,
@@ -62,6 +63,8 @@ export class AppComponent implements AfterViewInit{
       this.loadingProgress = (progress * 100).toString().split('.')[0] + '%';
       if(progress === 1){
         this.loadingProgressElement.nativeElement.style.visibility = "hidden";
+        this.isLoad = true;
+        this.lablesRef.forEach(value => value.nativeElement.style.visibility = "visible");
       }
     })
 

@@ -31,6 +31,9 @@ import {SMAAPass} from "three/examples/jsm/postprocessing/SMAAPass";
 import {SSAARenderPass} from "three/examples/jsm/postprocessing/SSAARenderPass";
 import {UnrealBloomPass} from "three/examples/jsm/postprocessing/UnrealBloomPass";
 import {InfoPoints} from "../Configurations/InfoPoints";
+import {gsap} from "gsap";
+import {LoadingViewBuilder} from "../Loading/LoadingViewBuilder";
+import {environment} from "../../environments/environment";
 
 
 export class MainScene extends Group {
@@ -83,7 +86,7 @@ export class MainScene extends Group {
       // @ts-ignore
       this._bokehPass.uniforms['aperture'].value = this._bokehParams.aperture;
     })
-    postProcessingFolder.add(this._bokehParams, 'maxblur').min(0).max(0.01).step(0.0001).onChange(() => {
+    postProcessingFolder.add(this._bokehParams, 'maxblur').min(0).max(0.1).step(0.0001).onChange(() => {
       // @ts-ignore
       this._bokehPass.uniforms['maxblur'].value = this._bokehParams.maxblur;
     })
@@ -141,6 +144,8 @@ export class MainScene extends Group {
     const gammaCorrectionPass = new ShaderPass(GammaCorrectionShader);
     effectComposer.addPass(gammaCorrectionPass);
 
+    this.addDuneButton(room);
+
 
     this._threeJS.scene.add(room.scene);
   }
@@ -174,6 +179,10 @@ export class MainScene extends Group {
           funuture.colorSpace = SRGBColorSpace
           child.material = new MeshBasicMaterial({map: funuture})
         }
+        else if(child.name === "ScreenPlane"){
+          child.layers.enable(Layers.ScreenPanel);
+          child.material = new MeshBasicMaterial({color: 0x000000, opacity: 0.01, transparent: true, side: 2})
+        }
       }
     })
   }
@@ -195,5 +204,46 @@ export class MainScene extends Group {
         }
       })
     })
+  }
+
+  private addDuneButton(room: GLTF) {
+
+    const raycaster = new Raycaster();
+    const mouse = new Vector2();
+
+    document.addEventListener('pointerdown', (event) => {
+      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+      raycaster.setFromCamera(mouse, this._camera);
+      raycaster.layers.set(Layers.ScreenPanel);
+      const intersects = raycaster.intersectObjects(room.scene.children, true);
+      if(intersects.length > 0){
+        this.moveCameraToPoint(intersects[0].object.position);
+      }
+    });
+  }
+
+  private moveCameraToPoint(point: Vector3) {
+    const overlay = this._threeJS.scene.getObjectByName("LoadingOverlay") as Mesh;
+    const tween = gsap.to(this._camera.position, {
+      duration: 1,
+      x: point.x,
+      y: point.y,
+      z: point.z,
+      onStart: () => {
+        this._transformControls.orbitControls.enabled = false;
+        this._transformControls.orbitControls.target.copy(point);
+        this._bokehPass.enabled = true;
+      },
+      onUpdate: () => {
+       this._unrealBloomEffect.strength = tween.progress() * 3
+       this._unrealBloomEffect.threshold = 1 - tween.progress()
+       this._unrealBloomEffect.radius = tween.progress() * 3;
+      },
+      onComplete: () => {
+        this._transformControls.orbitControls.enabled = true
+        window.location.href = environment.duneLink
+      }
+    });
   }
 }
