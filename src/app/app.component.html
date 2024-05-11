@@ -5,6 +5,8 @@
     <div #loader style="position: absolute; rotate: 90deg; scale: 2; visibility: visible; margin: 0px -45px;" id="loader"></div>
   </div>
 
+  <div class="free-move" (click)="freeMovement()">Free</div>
+
   <div *ngFor="let point of points; let i = index" (click)="choosePointClick(i + 1)" class="point" style="visibility: inherit" #point [class]="'point point-' + i">
     <div #pointLable class="text">{{i + 1}}</div>
   </div>

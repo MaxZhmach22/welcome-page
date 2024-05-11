@@ -32,7 +32,7 @@ export class HintsView {
     for (let i = 0; i < 4; i++) {
       const point = new Group();
       const position = InfoPoints.get(i + 1)!.position;
-      point.position.set(position.x, position.y, position.z);
+      point.position.set(position!.pointOfView.x, position!.pointOfView.y, position!.pointOfView.z);
       point.name = `Point_0${i}`;
       group.add(point)
     }
@@ -55,7 +55,7 @@ export class HintsView {
 
         this._frustum.setFromProjectionMatrix(new Matrix4().multiplyMatrices(this._camera.projectionMatrix, this._camera.matrixWorldInverse));
 
-        const isInFrustum = this._frustum.containsPoint(point.pictureInfo.position);
+        const isInFrustum = this._frustum.containsPoint(point.pictureInfo.position.pointOfView);
 
         const outOfScreen = screenPosition.x < -offset
           || screenPosition.x > offset
@@ -100,7 +100,7 @@ export class HintsView {
                 cameraPosition: child.localToWorld(new Vector3(0, 2, 0)),
                 lookAtPosition: child.localToWorld(new Vector3(0, 0, 0)),
                 hintPosition: lookPoint.localToWorld(new Vector3(0, 0, 0)),
-                position: point.position,
+                position: point.position!,
                 //orbitControlsConfig: orbitControlsConstants
               });
             }
@@ -155,7 +155,10 @@ export interface PictureInfoCoordinates {
   cameraPosition: Vector3,
   lookAtPosition: Vector3,
   hintPosition: Vector3,
-  position: Vector3,
+  position: {
+    pointOfView: Vector3,
+    cameraPosition: Vector3
+  }
   //orbitControlsConfig: OrbitControlsConstants
 }
 

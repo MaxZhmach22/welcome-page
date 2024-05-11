@@ -30,6 +30,7 @@ import {GammaCorrectionShader} from "three/examples/jsm/shaders/GammaCorrectionS
 import {SMAAPass} from "three/examples/jsm/postprocessing/SMAAPass";
 import {SSAARenderPass} from "three/examples/jsm/postprocessing/SSAARenderPass";
 import {UnrealBloomPass} from "three/examples/jsm/postprocessing/UnrealBloomPass";
+import {InfoPoints} from "../Configurations/InfoPoints";
 
 
 export class MainScene extends Group {
@@ -106,9 +107,10 @@ export class MainScene extends Group {
 
     const room = ResourcesGLTF.get(GLTFModels.Room)!;
 
+    this.setPointsOfCameraView(room)
     this.setRoomMaterials(room);
 
-    console.log(room)
+    console.log(room.scene)
     room.scene.scale.set(1, 1, 1);
 
     this._hintView = new HintsView(
@@ -144,7 +146,6 @@ export class MainScene extends Group {
   }
 
   private setRoomMaterials(room: GLTF) {
-
     room.scene.traverse((child) => {
       if (child instanceof Mesh) {
         if (child.name === 'BaseRoom') {
@@ -173,15 +174,26 @@ export class MainScene extends Group {
           funuture.colorSpace = SRGBColorSpace
           child.material = new MeshBasicMaterial({map: funuture})
         }
-        console.log(child.name)
       }
     })
   }
-
 
   update(dt: number) {
     if(this._hintView) this._hintView.update(dt);
     if(this._cameraMovementSystem) this._cameraMovementSystem.update(dt);
   }
 
+  private setPointsOfCameraView(room: GLTF) {
+    room.scene.traverse((child) => {
+      InfoPoints.forEach((value, key) => {
+        if(child.name === value.attachedMeshName){
+          let cameraPosition: Vector3 = child.children[0].getWorldPosition(new Vector3());
+          value.position = {
+            pointOfView: child.position.clone(),
+            cameraPosition: new Vector3(cameraPosition.x, cameraPosition.y, cameraPosition.z)
+          };
+        }
+      })
+    })
+  }
 }

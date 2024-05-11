@@ -122,14 +122,19 @@ html, body {
 }
 
 .text.visible.active{
+  overflow-y: auto;
   opacity: 1;
-  width: 400px;
-  height: 140px;
+  padding: 10px;
+  width: 320px;
+  min-height: 120px;
+  max-height: 450px;
+  word-wrap: break-word;
   border-radius: 5px;
-  pointer-events: none;
   transform: scale(1,1);
   transition: all 0.5s;
   text-align: justify;
+  scrollbar-color: #888 #000000;
+  scrollbar-width: thin;
 }
 
 .nav__dots{
@@ -159,4 +164,29 @@ html, body {
 
 .nav__dot.active{
   background: rgb(255, 255, 255);
+}
+
+.free-move{
+  position: absolute;
+  bottom: 22px;
+  left: 22px;
+  z-index: 9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #00000077;
+  color: #FFFFFF;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  font-size: 24px;
+  font-weight: 800;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.free-move:hover{
+  background: #000000;
+  transform: scale(1.2, 1.2);
 }

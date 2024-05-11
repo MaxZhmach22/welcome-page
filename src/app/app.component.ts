@@ -85,12 +85,12 @@ export class AppComponent implements AfterViewInit{
   choosePointClick(i: number) {
     this.currentPoint = i;
     this.resetPoints();
-    this._transformControls.orbitControls.target.copy(InfoPoints.get(i)!.position);
+    this._transformControls.orbitControls.target.copy(InfoPoints.get(i)!.position!.pointOfView);
     gsap.to(this._engineService.camera.position, {
       duration: 1.5,
-      x: InfoPoints.get(i)!.position.x * .5,
-      y: InfoPoints.get(i)!.position.y,
-      z: InfoPoints.get(i)!.position.z * .5,
+      x: InfoPoints.get(i)!.position!.cameraPosition.x,
+      y: InfoPoints.get(i)!.position!.cameraPosition.y,
+      z: InfoPoints.get(i)!.position!.cameraPosition.z,
       onStart: () => {
         this.lablesRef.toArray()[i-1].nativeElement.classList.add('active')
         this.lablesRef.toArray()[i-1].nativeElement.innerHTML = InfoPoints.get(i)?.hintMessage;
@@ -106,5 +106,23 @@ export class AppComponent implements AfterViewInit{
       lable.nativeElement.innerHTML = index + 1;
       lable.nativeElement.classList.remove('active')
     })
+  }
+
+  freeMovement() {
+    this.resetPoints();
+    if(this.currentPoint === 5) return;
+    this.currentPoint = 5;
+    this._transformControls.orbitControls.target.copy(InfoPoints.get(5)!.position!.pointOfView);
+    gsap.to(this._engineService.camera.position, {
+      duration: 1,
+      x: InfoPoints.get(5)!.position!.cameraPosition.x,
+      y: InfoPoints.get(5)!.position!.cameraPosition.y,
+      z: InfoPoints.get(5)!.position!.cameraPosition.z,
+      onStart: () => {
+        this._transformControls.orbitControls.enabled = false;
+      },
+      onComplete: () => {
+        this._transformControls.orbitControls.enabled = true}
+    });
   }
 }
