@@ -1,27 +1,36 @@
-# WelcomePage
+# Welcome!
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.1.2.
+Hello to everyone who has stumbled upon this repository.
+This modest project is a welcome page that gives a bit of insight about me and my projects.
+Inside the repository, you will find an Angular application, which in turn acts as a wrapper for Three.js.
+Utilizing Three.js, I have put together a small 3D scene that features a typical teenager’s room from the 2000s.
+Numerical hints are provided to help you spot the details of the room and offer a brief description.
 
-## Development server
+All elements of the room have been created by me using Blender, subsequently exported in the glTF format.
+Textures were baked separately to optimize the project's performance.
+The total size of the project is about 13 megabytes.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Docker technology has assisted me in compiling and deploying the project to the web.
+You can view the Dockerfile within the project itself.
+It is utilized in an external docker-compose file that configures nginx.
 
-## Code scaffolding
+P.S. The project is in a developmental stage and will be supplemented with new ~~bugs~~ features.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+# Приветствую!
 
-## Build
+Привет всем заглянувшим в этот репозиторий. Этот небольшой проект - это приветсвенная страница, 
+которая расскажет немного обо мне и моих проектах. Внутри репозитория вы обнаружите Angular приложение, 
+которое, в свою очередь, является оболочкой для Three.js.
+С помощью Three.js я создал небольшую 3D сцену, внутри которой находится модель комнаты типичного подростка из 2000-х годов. 
+Подсказки с цифрами помогут увидеть детали комнаты и дадут небольшое описание.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Все элементы комнаты были созданы мной в Blender, а затем экспортированы в формат glTF. 
+Текстуры были запечены отдельно для оптимизации проекта.
+Общий вес проекта составляет около 13 мегабайт.
 
-## Running unit tests
+Для сборки и разворачивая проекта на сайте мне помогает технология Docker. 
+Dockerfile вы можете увидеть внутри проекта. Он используется во внешнем docker-compose файле, который конфигурирует nginx.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+P.S. Проект находится в стадии разработки и будет дополняться новыми ~~багами~~ элементами.
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+#  [https://www.zhmachinsky.art/](https://www.zhmachinsky.art/)
