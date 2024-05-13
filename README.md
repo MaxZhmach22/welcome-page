@@ -8,7 +8,7 @@ Numerical hints are provided to help you spot the details of the room and offer 
 
 All elements of the room have been created by me using Blender, subsequently exported in the glTF format.
 Textures were baked separately to optimize the project's performance.
-The total size of the project is about 13 megabytes.
+The total size of the project is about 10 megabytes.
 
 Docker technology has assisted me in compiling and deploying the project to the web.
 You can view the Dockerfile within the project itself.
@@ -26,7 +26,7 @@ P.S. The project is in a developmental stage and will be supplemented with new ~
 
 Все элементы комнаты были созданы мной в Blender, а затем экспортированы в формат glTF. 
 Текстуры были запечены отдельно для оптимизации проекта.
-Общий вес проекта составляет около 13 мегабайт.
+Общий вес проекта составляет около 10 мегабайт.
 
 Для сборки и разворачивая проекта на сайте мне помогает технология Docker. 
 Dockerfile вы можете увидеть внутри проекта. Он используется во внешнем docker-compose файле, который конфигурирует nginx.
