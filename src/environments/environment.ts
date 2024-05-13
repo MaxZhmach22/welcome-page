@@ -1,5 +1,4 @@
 export const environment = {
   production: false,
-  duneLink: 'http://localhost:4200/',
-  debug: "/debug"
+  duneLink: 'http://localhost:4200/'
 };

@@ -1,7 +1,6 @@
-import {AfterViewInit, Component, ElementRef, HostListener, QueryList, ViewChild, ViewChildren} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {ReinhardToneMapping, Scene, SRGBColorSpace, TextureLoader, WebGLRenderer} from "three";
 import {IThreeJS} from "./Interfaces/IThreeJS";
-import {OrbitControlSettingsProvider} from "./Services/OrbitControlSettingsProvider";
 import {EngineService} from "./Services/EngineService";
 import {ResourcesGLTF, ResourcesTextures} from "./Loading/ResourcesMap";
 import {GLTFModels} from "./Enums/Models";
@@ -25,16 +24,13 @@ export class AppComponent implements AfterViewInit{
 
   @ViewChildren('point') public pointsRef!: QueryList<ElementRef>;
   @ViewChildren('pointLable') public lablesRef!: QueryList<ElementRef>;
-
   public points = Array(4).fill(null).map((_, index) => index + 1);
-  protected readonly PathConfig = InfoPoints;
 
   loadingProgress: string = '';
   currentPoint: number = 0;
   isLoad: boolean = false;
 
   constructor(private readonly _engineService: EngineService,
-              private readonly _orbitControls: OrbitControlSettingsProvider,
               private readonly _transformControls: TransformControlService){
   }
 
@@ -82,7 +78,6 @@ export class AppComponent implements AfterViewInit{
     }
 
     await this._engineService.init(threeJS, this.gameContainer, this.pointsRef, this.lablesRef);
-    this._orbitControls.init();
   }
 
   choosePointClick(i: number) {

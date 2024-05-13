@@ -14,37 +14,10 @@ html, body {
   outline: none;
 }
 
-
-
-
-#overlay {
-  position: fixed;
-  font-size: 5vh;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0,0,0,0.5);
-  text-align: center;
-}
 #loading-indicator {
   display: block;
 }
 
-#click-to-play {
-  /*display: none;*/
-  color: black;
-  background-color: white;
-  border: 1px solid black;
-}
-
-#enter-vr {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translate(-50%,0);
-}
-
-/* HTML: <div class="loader"></div> */
-/* HTML: <div class="loader"></div> */
 #loader {
   width: 90px;
   height: 14px;
@@ -153,9 +126,6 @@ html, body {
   cursor: pointer;
   transition: all 0.3s;
 }
-
-
-
 
 .nav__dot:hover{
   transform: scale(1.2, 1.2);

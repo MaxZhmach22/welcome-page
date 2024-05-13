@@ -85,7 +85,6 @@ export class EngineService {
     if (environment.production) {
       this.panelGuiService.gui.hide()
     }
-    //this.panelGuiService.gui.close()
   }
 
   async init(threeJS: IThreeJS, gameContainer: ElementRef,  pointsRef: QueryList<ElementRef>,lablesRef: QueryList<ElementRef>) {
@@ -130,11 +129,10 @@ export class EngineService {
     this._onUpdate.next(deltaTime);
     if(this._mainScene) this._mainScene.update(deltaTime);
     updateMeshUI()
+
     //Helpers
     this.mouseRaycastService.update(deltaTime);
-    //this.transformControls.update()
 
     this._mainScene!.EffectComposer.render(deltaTime)
-    //this._threeJS.renderer.render(this._threeJS.scene, this._camera);
   }
 }

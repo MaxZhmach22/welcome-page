@@ -18,9 +18,9 @@ import {
 import {GLTF} from "three/examples/jsm/loaders/GLTFLoader";
 import {Images} from "../Enums/Images";
 import {ElementRef, QueryList} from "@angular/core";
-import {HintsView} from "./HintsView";
+import {HintsViewInitializer} from "./HintsViewInitializer";
 import {Layers} from "../Enums/Layers";
-import {CameraMovementSystem} from "./CameraMovementSystem";
+import {OrbitControlsInitializer} from "./OrbitControlsInitializer";
 import {EffectComposer} from "three/examples/jsm/postprocessing/EffectComposer";
 import {RenderPass} from "three/examples/jsm/postprocessing/RenderPass";
 import {BokehPass} from "three/examples/jsm/postprocessing/BokehPass";
@@ -34,39 +34,18 @@ import {InfoPoints} from "../Configurations/InfoPoints";
 import {gsap} from "gsap";
 import {LoadingViewBuilder} from "../Loading/LoadingViewBuilder";
 import {environment} from "../../environments/environment";
+import {PostProcessingInitializer} from "./PostProcessingInitializer";
 
 
 export class MainScene extends Group {
 
-  private _hintView: HintsView | null = null;
-  private _cameraMovementSystem: CameraMovementSystem | null = null;
-
-  private _renderTarget = new WebGLRenderTarget(800, 600, {
-    colorSpace: SRGBColorSpace,
-    samples: this._threeJS.renderer.getPixelRatio() === 1 ? 2 : 0,
-  });
-
-  private _effectComposer = new EffectComposer(this._threeJS.renderer, this._renderTarget);
-
-  private _bokehParams= {
-    enable: false,
-    focus: 0.312,
-    aperture: 0.198,
-    maxblur: 0.004,
-    exposure: 1
-  };
-
-  private _bokehPass = new BokehPass( this._threeJS.scene, this._camera, {
-    focus: this._bokehParams.focus,
-    aperture: this._bokehParams.aperture,
-    maxblur: this._bokehParams.maxblur,
-  });
-
-  private _unrealBloomEffect = new UnrealBloomPass(new Vector2(window.innerWidth, window.innerHeight), 0.24, 0.234, 0.12);
+  private _hintViewInitializer: HintsViewInitializer | null = null;
+  private _cameraMovementSystem: OrbitControlsInitializer | null = null;
+  private readonly _postProcessingInitializer = new PostProcessingInitializer(this._threeJS, this._camera, this._panelGuiService);
 
 
   get EffectComposer() {
-    return this._effectComposer;
+    return this._postProcessingInitializer.effectComposer;
   }
 
   constructor(private readonly _threeJS: IThreeJS,
@@ -76,35 +55,8 @@ export class MainScene extends Group {
               private readonly pointsRef: QueryList<ElementRef>,
               private readonly lablesRef: QueryList<ElementRef>) {
     super();
-    const postProcessingFolder = this._panelGuiService.gui.addFolder("PostProcessing")
-
-    postProcessingFolder.add(this._bokehParams, 'focus').min(0).max(3000).step(1).onChange(() => {
-      // @ts-ignore
-      this._bokehPass.uniforms['focus'].value = this._bokehParams.focus;
-    })
-    postProcessingFolder.add(this._bokehParams, 'aperture').min(0).max(10).step(0.01).onChange(() => {
-      // @ts-ignore
-      this._bokehPass.uniforms['aperture'].value = this._bokehParams.aperture;
-    })
-    postProcessingFolder.add(this._bokehParams, 'maxblur').min(0).max(0.1).step(0.0001).onChange(() => {
-      // @ts-ignore
-      this._bokehPass.uniforms['maxblur'].value = this._bokehParams.maxblur;
-    })
-    postProcessingFolder.add(this._bokehParams, 'enable').onChange(() => {
-      this._bokehPass.enabled = this._bokehParams.enable;
-    })
-
-    postProcessingFolder.add(this._unrealBloomEffect, 'threshold').min(0).max(1).step(0.001);
-    postProcessingFolder.add(this._unrealBloomEffect, 'strength').min(0).max(3).step(0.001);
-    postProcessingFolder.add(this._unrealBloomEffect, 'radius').min(0).max(3).step(0.001);
-
-    this._bokehPass.enabled = false
-
     this.init();
   }
-
-
-  private _renderPass = new RenderPass(this._threeJS.scene, this._camera);
 
   private init() {
 
@@ -112,11 +64,11 @@ export class MainScene extends Group {
 
     this.setPointsOfCameraView(room)
     this.setRoomMaterials(room);
+    this._threeJS.scene.background = new Color(0x000000);
 
-    console.log(room.scene)
     room.scene.scale.set(1, 1, 1);
 
-    this._hintView = new HintsView(
+    this._hintViewInitializer = new HintsViewInitializer(
       this._threeJS,
       this._transformControls,
       this._camera,
@@ -124,28 +76,13 @@ export class MainScene extends Group {
       this.pointsRef,
       this.lablesRef);
 
-    this._hintView.init(this);
+    this._hintViewInitializer.init(this);
 
-    this._cameraMovementSystem = new CameraMovementSystem(this._camera, this._transformControls)
+    this._cameraMovementSystem = new OrbitControlsInitializer(this._camera, this._transformControls)
 
-    this._threeJS.scene.background = new Color(0x000000);
-
-
-    const effectComposer = this._effectComposer;
-    effectComposer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    effectComposer.setSize(window.innerWidth, window.innerHeight);
-
-    const renderPass = this._renderPass;
-    effectComposer.addPass(renderPass);
-
-    effectComposer.addPass(this._bokehPass);
-    effectComposer.addPass(this._unrealBloomEffect);
-
-    const gammaCorrectionPass = new ShaderPass(GammaCorrectionShader);
-    effectComposer.addPass(gammaCorrectionPass);
+    this._postProcessingInitializer.init();
 
     this.addDuneButton(room);
-
 
     this._threeJS.scene.add(room.scene);
   }
@@ -188,7 +125,7 @@ export class MainScene extends Group {
   }
 
   update(dt: number) {
-    if(this._hintView) this._hintView.update(dt);
+    if(this._hintViewInitializer) this._hintViewInitializer.update(dt);
     if(this._cameraMovementSystem) this._cameraMovementSystem.update(dt);
   }
 
@@ -224,7 +161,6 @@ export class MainScene extends Group {
   }
 
   private moveCameraToPoint(point: Vector3) {
-    const overlay = this._threeJS.scene.getObjectByName("LoadingOverlay") as Mesh;
     const tween = gsap.to(this._camera.position, {
       duration: 1,
       x: point.x,
@@ -233,12 +169,12 @@ export class MainScene extends Group {
       onStart: () => {
         this._transformControls.orbitControls.enabled = false;
         this._transformControls.orbitControls.target.copy(point);
-        this._bokehPass.enabled = true;
+        this._postProcessingInitializer.bokehPass.enabled = true;
       },
       onUpdate: () => {
-       this._unrealBloomEffect.strength = tween.progress() * 3
-       this._unrealBloomEffect.threshold = 1 - tween.progress()
-       this._unrealBloomEffect.radius = tween.progress() * 3;
+       this._postProcessingInitializer.unrealBloomEffect.strength = tween.progress() * 3
+       this._postProcessingInitializer.unrealBloomEffect.threshold = 1 - tween.progress()
+       this._postProcessingInitializer.unrealBloomEffect.radius = tween.progress() * 3;
       },
       onComplete: () => {
         this._transformControls.orbitControls.enabled = true
